@@ -51,7 +51,7 @@ export default [{
   },
 }, {
   name: 'user',
-  description: 'Replies dwith user info!',
+  description: 'Replies with user info!',
   run: (api, input) => {
     // TODO: Fetch user object from cloud and return a summary to the user
   }

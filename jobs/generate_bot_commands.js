@@ -14,7 +14,7 @@ export function makeBotCommands(config) {
 
   return rest.put(Routes.applicationGuildCommands(clientId, guildId), { body: commands })
     .then(() => {
-      console.log('Successfully registered application commands.', commands);
+      console.log('Successfully registered application commands.'); //, commands);
       return commands;
     }).catch(console.error);
 }

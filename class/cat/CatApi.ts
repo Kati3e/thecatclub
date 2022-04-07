@@ -1,10 +1,26 @@
+// class CatApi {
+
+
+// }
+// ... elsewhere ...
+// namespace C {
+//   export interface D {}
+// }
+// let y: C.D; // OK
+
+
 // TODO: Backend API Handler for reading/write data between disk, memory and cloud
 // Will also handle APIs needed for website hosting, etc
 import { Storage } from '@google-cloud/storage';
 // import * as fs from 'fs/promises';
 import fs from 'fs';
+import DiscordBot from './DiscordBotApi.js';
 
 export default class CatClubApi {
+  discordBot: DiscordBot;
+  cached_bot_data: Object; // convert to buffer
+  cloud_bot_data: Object;
+
   constructor() {
     this.cached_bot_data = {}; // Make the cache entries into a class?
     this.cloud_bot_data = {};
@@ -13,6 +29,15 @@ export default class CatClubApi {
   async _setup() {
     await this._readCloudBotData();
     await this._writeCloudBotData();
+  }
+
+  async _setupDiscordBot(config) {
+    this.discordBot = new DiscordBot(this, config);
+    return true; // false with thrown error messages
+  }
+
+  async _setupJupyterServer() {
+    return null;
   }
 
   // Private
@@ -70,42 +95,33 @@ export default class CatClubApi {
   }
 
   // Public
-  addNewUser(input) { // TODO: Validate this new user's correct intro XP
-    // Add user to cached database object
-    if (this.cached_bot_data[input.id]) return {allowed: true, message: 'You have already joined!'};
-    this.cached_bot_data[input.id] = {
-      ...input
-    };
-    this._writeCachedBotData();
-  }
+  // API access permissions should be stored in a bucket and accessed via another api object
+  // return any errors from writing to the cache/memory,
+  // let the discord api handle displaying the correct error messages and handling
 
+
+  // Move these to the discord api
+  // TODO: Add validators to each command and API request
+  // joinValidator(username) {
+  //   return this.root_users.has(username);
+  // }
   updateBotCloud() { // Perform backend validate for permissions as well
     this._updateDiskToCloud();
   }
-
   sendMessage() { // This needs to be private-ish
-
   }
-
-  getUser(id) {
+  getDiscordUserById(id) {
     return this.cached_bot_data[id];
   }
-
-  // TODO: Log all API requests to the cloud bucket
-  logger() {
-
-  }
-
+  // TODO: All APIs should have this: Log all API requests to the cloud bucket
   // TODO: Debug everything important and have a toggle for on/on
   // Similar to a prod/test toggle
   // Removes the need to continue writing random console logs
   // Get vscode debugger attached
+  logger() {
+  }
   debug() {
-
   }
 
-  // TODO: Add validators to each command and API request
-  joinValidator(username) {
-    return this.root_users.has(username);
-  }
+
 }

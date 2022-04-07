@@ -3,7 +3,7 @@ import { REST } from '@discordjs/rest';
 import { Routes } from 'discord-api-types/v9';
 import botCommands from '../bot/commands/commands.js';
 
-export function makeBotCommands(config) {
+export function makeBotCommands(config) { // Move to new discord API hooker
   const { clientId, guildId, token } = config;
   const commands = [ // TODO: Clean this up
     ...botCommands.map(command =>
